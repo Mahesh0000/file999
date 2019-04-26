@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="78ee399c-c46a-4249-a48d-4ed62b90ec78" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="file-9Flow" doc:id="9e4f6699-9ae2-4bed-90ca-906b86fbc493" >
+		<http:listener doc:name="Listener" doc:id="9fded94c-b250-41b7-87a6-bd88fbff437e" config-ref="HTTP_Listener_config" path="/file" allowedMethods="GET"/>
+		<file:move doc:name="Move" doc:id="a4ad0673-ecad-41b2-a180-2c693c2805cf" sourcePath="D:\workspace-4.0\file-9\src\main\resources\input" targetPath="D:\workspace-4.0\file-9\src\main\resources\output"/>
+		<ee:transform doc:name="Transform Message" doc:id="a710a9bc-4cd3-4e9b-8c07-ed35de1b7286" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d67ec146-ac13-4780-8d32-d7a1f2500bcd" message="#[payload]"/>
+	</flow>
+</mule>
